@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="HCSDataBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="HCSDataBaseEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Houses" EntityType="HCSDataBaseModel.House" />
+    <EntitySet Name="Owners" EntityType="HCSDataBaseModel.Owner" />
+    <EntitySet Name="Users" EntityType="HCSDataBaseModel.User" />
+    <AssociationSet Name="FK_Houses_Owners" Association="HCSDataBaseModel.FK_Houses_Owners">
+      <End Role="Owner" EntitySet="Owners" />
+      <End Role="House" EntitySet="Houses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Houses_Users" Association="HCSDataBaseModel.FK_Houses_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="House" EntitySet="Houses" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="House">
+    <Key>
+      <PropertyRef Name="HousID" />
+    </Key>
+    <Property Name="HousID" Type="Int32" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="OwnerID" Type="Int32" Nullable="false" />
+    <Property Name="YearConstr" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CountFloor" Type="Int32" />
+    <Property Name="ReadyWinter" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+    <Property Name="PublishData" Type="DateTime" Precision="3" />
+    <Property Name="Images" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Owner" Relationship="HCSDataBaseModel.FK_Houses_Owners" FromRole="House" ToRole="Owner" />
+    <NavigationProperty Name="User" Relationship="HCSDataBaseModel.FK_Houses_Users" FromRole="House" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Owner">
+    <Key>
+      <PropertyRef Name="OwnerID" />
+    </Key>
+    <Property Name="OwnerID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Surname" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="Patronymic" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Houses" Relationship="HCSDataBaseModel.FK_Houses_Owners" FromRole="Owner" ToRole="House" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Phone" Type="Int32" />
+    <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Password" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Houses" Relationship="HCSDataBaseModel.FK_Houses_Users" FromRole="User" ToRole="House" />
+  </EntityType>
+  <Association Name="FK_Houses_Owners">
+    <End Type="HCSDataBaseModel.Owner" Role="Owner" Multiplicity="1" />
+    <End Type="HCSDataBaseModel.House" Role="House" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Owner">
+        <PropertyRef Name="OwnerID" />
+      </Principal>
+      <Dependent Role="House">
+        <PropertyRef Name="OwnerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Houses_Users">
+    <End Type="HCSDataBaseModel.User" Role="User" Multiplicity="1" />
+    <End Type="HCSDataBaseModel.House" Role="House" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="House">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

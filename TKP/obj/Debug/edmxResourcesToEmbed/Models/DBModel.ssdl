@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище HCSDataBaseModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Houses">
+    <Key>
+      <PropertyRef Name="HousID" />
+    </Key>
+    <Property Name="HousID" Type="int" Nullable="false" />
+    <Property Name="Address" Type="varchar" MaxLength="50" />
+    <Property Name="City" Type="varchar" MaxLength="50" />
+    <Property Name="OwnerID" Type="int" Nullable="false" />
+    <Property Name="YearConstr" Type="varchar" MaxLength="50" />
+    <Property Name="CountFloor" Type="int" />
+    <Property Name="ReadyWinter" Type="varchar" MaxLength="7" />
+    <Property Name="PublishData" Type="datetime" />
+    <Property Name="Images" Type="image" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Owners">
+    <Key>
+      <PropertyRef Name="OwnerID" />
+    </Key>
+    <Property Name="OwnerID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="30" />
+    <Property Name="Surname" Type="varchar" MaxLength="30" />
+    <Property Name="Patronymic" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" />
+    <Property Name="Surname" Type="varchar" MaxLength="50" />
+    <Property Name="Patronymic" Type="varchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Phone" Type="int" />
+    <Property Name="Position" Type="varchar" MaxLength="50" />
+    <Property Name="Password" Type="varchar" MaxLength="12" />
+  </EntityType>
+  <Association Name="FK_Houses_Owners">
+    <End Role="Owners" Type="Self.Owners" Multiplicity="1" />
+    <End Role="Houses" Type="Self.Houses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Owners">
+        <PropertyRef Name="OwnerID" />
+      </Principal>
+      <Dependent Role="Houses">
+        <PropertyRef Name="OwnerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Houses_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Houses" Type="Self.Houses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Houses">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище HCSDataBaseModelContainer">
+    <EntitySet Name="Houses" EntityType="Self.Houses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Owners" EntityType="Self.Owners" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Houses_Owners" Association="Self.FK_Houses_Owners">
+      <End Role="Owners" EntitySet="Owners" />
+      <End Role="Houses" EntitySet="Houses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Houses_Users" Association="Self.FK_Houses_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Houses" EntitySet="Houses" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
